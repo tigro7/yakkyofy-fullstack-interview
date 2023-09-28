@@ -1,0 +1,17 @@
+/// <reference types="vite/client" />
+{
+  "extends": "tsconfig/base.json",
+  "include": ["."],
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "types": ["node", "vite/client"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "vueCompilerOptions": {
+    "target": 2.7
+  }
+}

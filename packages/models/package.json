@@ -1,0 +1,19 @@
+{
+  "name": "@pandarocket/models",
+  "version": "1.0.0",
+  "description": "Mongo models package",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "start": "tsc",
+    "build": "tsc",
+    "dev": "tsc -w"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^7.5.2"
+  },
+  "devDependencies": {
+    "@pandarocket/types": "*"
+  }
+}
