@@ -1,7 +1,7 @@
 {
-  "name": "@pandarocket/types",
+  "name": "@interview/types",
   "version": "1.0.0",
-  "description": "Types for pandarocket project",
+  "description": "Types for interview project",
   "main": "index.d.ts",
   "types": "index.d.ts",
   "scripts": {

@@ -9,12 +9,12 @@
     "dev": "nodemon src/app.ts"
   },
   "dependencies": {
-    "@pandarocket/models": "*",
+    "@interview/models": "*",
     "dotenv": "^16.3.1",
     "rabbitmq-client": "^4.3.0"
   },
   "devDependencies": {
-    "@pandarocket/types": "*",
+    "@interview/types": "*",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"

@@ -7,13 +7,12 @@ rabbit.on('connection', () => console.info('Connection successfully (re)establis
 
 // create your publisher
 // const publisher = rabbit.createPublisher({ <config> })
+// await publisher.send(<queue>, <body>)
 
 async function onShutdown() {
   console.info('SIGTERM signal received: closing RabbitMQ connections')
   // Waits for pending confirmations and closes the underlying Channel
   // await publisher.close()
-  // Stop consuming. Wait for any pending message handlers to settle.
-  // await sub.close()
   await rabbit.close()
 }
 process.on('SIGINT', onShutdown)

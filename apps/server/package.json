@@ -1,14 +1,14 @@
 {
   "name": "server",
   "version": "0.0.0",
-  "author": "Pandarocket Team",
+  "author": "Yakkyofy Team",
   "scripts": {
     "start": "tsc && node dist/app.js",
     "build": "tsc",
     "dev": "nodemon src/app.ts"
   },
   "dependencies": {
-    "@pandarocket/models": "*",
+    "@interview/models": "*",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
@@ -31,7 +31,7 @@
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
-    "@pandarocket/types": "*",
+    "@interview/types": "*",
     "@slack/client": "^5.0.2",
     "@types/bcryptjs": "^2.4.3",
     "@types/compression": "^1.7.3",

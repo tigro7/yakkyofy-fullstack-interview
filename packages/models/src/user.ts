@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-import { IUser } from '@pandarocket/types/models/user'
+import { IUser } from '@interview/types/models/user'
 
 const userSchema = new Schema<IUser>(
   {

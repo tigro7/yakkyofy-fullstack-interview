@@ -10,9 +10,9 @@ This turborepo uses [Yarn](https://classic.yarnpkg.com/lang/en/) as a package ma
 
 ### Apps and Packages
 
-- `client`: a [Vue.js](https://vuejs.org/) app - `port: 8080 `
-- `server`: Nodejs & Express Server - `port: 3000`
-- `consumer`: Nodejs app connected to the server via RabbitMQ
+- `client`: a [Vue.js](https://vuejs.org/) 2.7 app with [Pinia](https://pinia.vuejs.org/), Vite and [Vuetify](https://vuetifyjs.com/en/)/[Tailwind](https://tailwindcss.com/) support - `port: 8080 `
+- `server`: NodeJS & ExpressJS Server for our APIs - `port: 3000`
+- `consumer`: NodeJS consumer app listening to RabbitMQ
 - `models`: MongoDB models used throughout the monorepo
 - `types`: TS types and declarations used throughout the monorepo
 
@@ -20,24 +20,23 @@ This turborepo uses [Yarn](https://classic.yarnpkg.com/lang/en/) as a package ma
 
 We're looking for a user authentication + CRUD. The customer deletion must be performed in a separate service with a queue.
 
+### Server
+
+- User MongoDB Model
+- User CRUD endpoints
+- Authentication endpoints and middleware (Preferred: Make use of [JWTs](https://jwt.io/))
+- Communicate with the consumer via [RabbitMQ](https://www.rabbitmq.com/) for the deletion of an User (Delete endpoint)
+
+### Consumer
+
+- Consume queue messages for user deletion
+
 ### Client
 
 - Login page.
 - Signup page.
 - Profile page (protected with vue router middleware).
 - 404 page.
-
-### Server
-
-- User MongoDB Model
-- User CRUD endpoints
-- Authentication endpoints
-- Authentication middleware
-- Communicate with the consumer for the deletion of an User (Delete endpoint)
-
-### Consumer
-
-- Consume queue messages for user deletion
 
 ## Development guide
 
@@ -70,3 +69,8 @@ yarn run dev
 ## Useful Links
 
 - [Turborepo](https://turborepo.org/docs)
+- [JWT](https://jwt.io/)
+- [RabbitMQ](https://www.rabbitmq.com/)
+- [Pinia](https://pinia.vuejs.org/)
+- [Tailwind](https://tailwindcss.com/)
+- [Vuetify](https://vuetifyjs.com/en/)

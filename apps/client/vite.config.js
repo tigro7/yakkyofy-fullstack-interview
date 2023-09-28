@@ -1,9 +1,10 @@
-import { fileURLToPath, URL } from 'url'
+import { URL, fileURLToPath } from 'url'
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue2'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue2'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -11,7 +12,7 @@ export default defineConfig({
     // AutoImport used to automatically import vue macros
     AutoImport({
       include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
-      imports: ['vue', 'vue-router/composables', '@vueuse/head', 'vue-i18n'],
+      imports: ['vue', 'vue-router/composables'],
       dts: 'src/utils/auto-imports.d.ts',
       vueTemplate: false,
       eslintrc: {
