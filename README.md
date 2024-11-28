@@ -52,6 +52,10 @@ WebApp ->> API: GET /screenshot/:ID
 API ->> WebApp: asset (done)
 ```
 
+## 🤖 Guidelines on Using AI Tools
+
+We encourage candidates to leverage AI tools to enhance productivity, such as summarizing documentation or assisting with simple code autocompletion. However, this test is designed to assess your personal skills, creativity, and problem-solving abilities. Please refrain from using AI to generate entire code sections or solve major parts of the test. Be aware that we may analyze the repository for fingerprints from common AI models to detect excessive or inappropriate AI usage, which could impact the evaluation of your submission. Above all, we value originality and your unique approach.
+
 ## 🥳 What to do when you are done?
 
 After completing the task, please update your repository. Even though you are working independently during this exercise, make an effort to be diligent with your commits and messages. We would like to observe how you handle version control. Include a concise README with instructions on how to run the application, and feel free to add any personal comments if necessary. Additionally, provide information on the time taken to complete the task and mention any difficulties encountered, if applicable.
