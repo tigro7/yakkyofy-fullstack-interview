@@ -55,10 +55,10 @@ app.post('/screenshot', async (req: Request, res: Response) => {
   }
 })
 
-app.get('/screenshot/:id', (req: Request, res: Response) => {
+app.get('/screenshot/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try{
-    const screenshot = Screenshot.findById(id);
+    const screenshot = await Screenshot.findById(id).lean();
     if(!screenshot){
       return res.status(404).json({ message: 'Screenshot not found' });
     }

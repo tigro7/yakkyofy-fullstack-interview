@@ -3,6 +3,9 @@
   const urlInput = ref('')
   const feedback = ref('')
   const imageUrl = ref('')
+  const pollingInterval = 5000;
+  let pollingTimer : NodeJS.Timeout | null = null;
+
   const handleSubmit = async () => {
     if (!urlInput.value) {
       feedback.value = 'Please enter a valid URL'
@@ -22,11 +25,74 @@
       localStorage.setItem('screenshotId', screenshotId);
 
       feedback.value = `Process queued successfully! Screenshot ID: ${screenshotId}`;
+      startPolling();
     } catch (error) {
       console.error('Error queuing screenshot:', error);
-      feedback.value = 'An error occurred'
+      feedback.value = 'An error occurred during queuing';
+    } finally {
+      urlInput.value = '';
     }
 }
+
+const pollStatus = async () => {
+  if (!localStorage.getItem('screenshotId')) {
+    return;
+  }
+
+  try{
+    const response = await fetch(`http://localhost:3000/screenshot/${localStorage.getItem('screenshotId')}`);
+    const data = await response.json();
+    const { status, file } = data;
+
+    if (status == 'done'){
+      //mostra lo screenshot
+      imageUrl.value = file; //gestisci il buffer
+      feedback.value = 'Screenshot is ready!';
+
+      //svuota il localStorage
+      localStorage.removeItem('screenshotId');
+      clearPolling();
+    }else if (status == 'queued'){
+      feedback.value = 'Screenshot status is still queued, reloading in 5 seconds...';  
+    }else if (status == 'processing'){
+      feedback.value = 'Screenshot status is still processing, reloading in 5 seconds...';
+    }
+  }catch (error){
+    console.error('Error polling screenshot status:', error);
+    feedback.value = 'An error occurred during polling';
+  }
+}
+
+//funzione per l'inizio del polling
+const startPolling = () => {
+  //permetti solo un polling
+  if (pollingTimer == null) {
+    pollingTimer = setInterval(pollStatus, pollingInterval);
+  }
+}
+
+//funzione per eliminare il polling
+const clearPolling = () => {
+  if (pollingTimer != null) {
+    clearInterval(pollingTimer);
+    pollingTimer = null;
+  }
+}
+
+//quando la pagina viene caricata, inizia il polling
+onMounted(() => {
+  //inizia il polling solo se c'è uno screenshot nello storage
+  if (localStorage.getItem('screenshotId')) {
+    feedback.value = 'Resuming polling...';
+    startPolling();
+  }
+})
+
+//quando la pagina viene distrutta, elimina il polling
+onUnmounted(() => {
+  clearPolling();
+})
+
 </script>
 
 <template>
