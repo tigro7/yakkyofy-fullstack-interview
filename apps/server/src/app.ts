@@ -11,6 +11,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import xss from 'xss-clean'
 import Screenshot from './schemas/screenshot'
+import { publishMessage } from './amqp'
 
 const app = express()
 app.use(helmet())
@@ -31,7 +32,7 @@ if (config.ENV !== 'development') app.set('trust proxy', 1)
 app.get('/', (req: Request, res: Response) => res.send('Yep im alive'))
 
 // TODO: add routes here. or refactor with a better scaffolding if you wish!
-app.post('/screenshot', (req: Request, res: Response) => {
+app.post('/screenshot', async (req: Request, res: Response) => {
   try{
     const { url } = req.body
 
@@ -40,9 +41,14 @@ app.post('/screenshot', (req: Request, res: Response) => {
     }
 
     const screenshot = new Screenshot({ url, 'status': 'queued' });
-    screenshot.save();
+    await screenshot.save();
 
-    res.status(201).json(screenshot);
+    // Invio del messaggio a RabbitMQ
+    const message = { id: screenshot._id };
+    const queueName = 'screenshot_queue';
+    publishMessage(queueName, message);
+
+    res.status(201).json({id: screenshot._id});
   }catch(error){
     res.status(500).json({ message: `Internal server error: ${error}` });
   }

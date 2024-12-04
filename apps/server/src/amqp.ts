@@ -9,6 +9,15 @@ rabbit.on('connection', () => console.info('Connection successfully (re)establis
 // const publisher = rabbit.createPublisher({ <config> })
 // await publisher.send(<queue>, <body>)
 
+async function publishMessage(queueName: string, body: object) {
+  const publisher = rabbit.createPublisher({
+    confirm: true, 
+  });
+
+  await publisher.send(queueName, Buffer.from(JSON.stringify(body)));
+  console.info(`Message sent to queue ${queueName}:`, body);
+}
+
 async function onShutdown() {
   console.info('SIGTERM signal received: closing RabbitMQ connections')
   // Waits for pending confirmations and closes the underlying Channel
@@ -18,4 +27,4 @@ async function onShutdown() {
 process.on('SIGINT', onShutdown)
 process.on('SIGTERM', onShutdown)
 
-export { rabbit }
+export { rabbit, publishMessage}
