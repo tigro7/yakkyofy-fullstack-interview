@@ -50,15 +50,24 @@ app.post('/screenshot', async (req: Request, res: Response) => {
 
     res.status(201).json({id: screenshot._id});
   }catch(error){
-    res.status(500).json({ message: `Internal server error: ${error}` });
+    console.error(`Error in post screenshot:`, error);
+    res.status(500).json({ message: `Internal server error` });
   }
 })
 
-/*
-app.get('/screenshot/:ID', (req: Request, res: Response) => {
-  return res.json({ message: 'get screenshot' });
+app.get('/screenshot/:id', (req: Request, res: Response) => {
+  const { id } = req.params;
+  try{
+    const screenshot = Screenshot.findById(id);
+    if(!screenshot){
+      return res.status(404).json({ message: 'Screenshot not found' });
+    }
+    res.status(200).json(screenshot);
+  } catch (error) {
+    console.error(`Error retrieving screenshot with ID ${id}:`, error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 })
-*/
 
 // 404
 app.use((req: Request, res: Response) => res.status(404).json({ message: 'Not found' }))
