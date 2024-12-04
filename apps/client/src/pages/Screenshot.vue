@@ -43,6 +43,7 @@
       feedback.value = 'An error occurred during queuing';
     } finally {
       urlInput.value = '';
+      imageUrl.value = '';
     }
 }
 

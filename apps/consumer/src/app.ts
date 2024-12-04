@@ -2,7 +2,7 @@ import { Connection } from 'rabbitmq-client'
 import { connection } from './database'
 import config from './config'
 import puppeteer from 'puppeteer'
-import Screenshot from '../../server/src/schemas/screenshot'
+import { BSON } from 'bson'
 
 const rabbit = new Connection(config.RABBIT_MQ)
 rabbit.on('error', err => console.error('RabbitMQ connection error', err))
@@ -63,7 +63,7 @@ async function startSubscriber() {
         try {
           // Recupera lo screenshot
           console.info(`Awaiting connection.collection: ${id}`);
-          const screenshot = await Screenshot.findById(id).lean();
+          const screenshot = await connection.collection('screenshots').findOne({"_id": new BSON.ObjectId(id)});
           if (!screenshot) {
             throw new Error(`Screenshot with ID ${id} not found`);
           }
@@ -81,8 +81,8 @@ async function startSubscriber() {
             // Update the screenshot with the actual screenshot and mark as done
             screenshot.file = Buffer.from(screenshotBuffer);
             screenshot.status = 'done';
-            await Screenshot.updateOne(
-              { _id: id },
+            await connection.collection('screenshots').updateOne(
+              { _id: new BSON.ObjectId(id) },
               { $set: { file: screenshot.file, status: screenshot.status } }
             );
 
