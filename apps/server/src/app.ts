@@ -43,8 +43,8 @@ app.post('/screenshot', (req: Request, res: Response) => {
     screenshot.save();
 
     res.status(201).json(screenshot);
-  }catch(e){
-    res.status(500).json({ message: `Internal server error: ${e.message}` });
+  }catch(error){
+    res.status(500).json({ message: `Internal server error: ${error}` });
   }
 })
 
