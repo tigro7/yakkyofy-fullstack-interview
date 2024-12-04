@@ -2,13 +2,13 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 interface IScreenshot extends Document {
     url: string;
-    file: Blob;
+    file?: Blob;
     status: 'queued' | 'processing' | 'done';
 }
 
 const ScreenshotSchema: Schema = new Schema({
     url: { type: String, required: true },
-    file: { type: Blob, required: true },
+    file: { type: Blob},
     status: { type: String, 
         enum: ['queued', 'processing', 'done'],
         required: true,
