@@ -27,6 +27,15 @@ app.use(ExpressMongoSanitize())
 // gzip compression
 app.use(compression())
 
+const validateUrl = (url: string): boolean => {
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 if (config.ENV !== 'development') app.set('trust proxy', 1)
 
 app.get('/', (req: Request, res: Response) => res.send('Yep im alive'))
@@ -36,8 +45,8 @@ app.post('/screenshot', async (req: Request, res: Response) => {
   try{
     const { url } = req.body
 
-    if(!url) {
-      return res.status(400).json({ message: 'URL is required' })
+    if(!url || typeof url !== 'string' || !url.match(/^(http|https):\/\//) || !validateUrl(url)){
+      return res.status(400).json({ message: 'a valid URL is required' });
     }
 
     const screenshot = new Screenshot({ url, 'status': 'queued' });
@@ -59,9 +68,11 @@ app.get('/screenshot/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try{
     const screenshot = await Screenshot.findById(id).lean();
+
     if(!screenshot){
       return res.status(404).json({ message: 'Screenshot not found' });
     }
+
     res.status(200).json(screenshot);
   } catch (error) {
     console.error(`Error retrieving screenshot with ID ${id}:`, error);

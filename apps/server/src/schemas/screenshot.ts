@@ -16,6 +16,6 @@ const ScreenshotSchema: Schema = new Schema({
     }
 });
 
-const Screenshot = mongoose.model<IScreenshot>('Screenshot', ScreenshotSchema);
+const Screenshot = mongoose.model<IScreenshot>('screenshots', ScreenshotSchema);
 
 export default Screenshot;

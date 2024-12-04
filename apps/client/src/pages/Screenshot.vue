@@ -6,8 +6,17 @@
   const pollingInterval = 5000;
   let pollingTimer : NodeJS.Timeout | null = null;
 
+  const validateUrl = (url: string): boolean => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   const handleSubmit = async () => {
-    if (!urlInput.value) {
+    if (!urlInput.value || !validateUrl(urlInput.value)) {
       feedback.value = 'Please enter a valid URL'
       return
     }
@@ -20,11 +29,14 @@
         body: JSON.stringify({ url: urlInput.value })
       })
       const data = await response.json()
+      
+      clearPolling();
 
       const screenshotId = data.id;
       localStorage.setItem('screenshotId', screenshotId);
 
       feedback.value = `Process queued successfully! Screenshot ID: ${screenshotId}`;
+
       startPolling();
     } catch (error) {
       console.error('Error queuing screenshot:', error);
@@ -45,8 +57,17 @@ const pollStatus = async () => {
     const { status, file } = data;
 
     if (status == 'done'){
-      //mostra lo screenshot
-      imageUrl.value = file; //gestisci il buffer
+      if (file) {
+        // Converti il buffer in base64
+        const imgSrc = `data:image/png;base64,${file.toString('base64')}`
+
+        //mostra lo screenshot
+        imageUrl.value = imgSrc;
+      } else {
+        console.error('No file found in the response.');
+        throw new Error('No file found in the response.');
+      }
+
       feedback.value = 'Screenshot is ready!';
 
       //svuota il localStorage
